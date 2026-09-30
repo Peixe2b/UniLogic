@@ -1,7 +1,0 @@
-// tests/test_json.ul — JSON stdlib test
-
-function main() returns int
-  print "json test start"
-  print "json test end"
-  return 0
-end function

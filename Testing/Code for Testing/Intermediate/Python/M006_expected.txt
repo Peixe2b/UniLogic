@@ -1,4 +1,0 @@
-5
-caught: divide by zero
-caught: negative input
-20
