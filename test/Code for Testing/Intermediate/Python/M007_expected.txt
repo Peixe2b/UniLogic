@@ -1,6 +1,0 @@
-3
-42
-10.0
-True
-False
-Score: 100
