@@ -10,14 +10,14 @@ import subprocess
 __version__ = "1.0.0"
 
 _base = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(_base, "Compiler", "Lexer"))
-sys.path.insert(0, os.path.join(_base, "Compiler", "AST Gen"))
-sys.path.insert(0, os.path.join(_base, "Compiler", "SynTree Def"))
-sys.path.insert(0, os.path.join(_base, "Compiler", "Semantic"))
-sys.path.insert(0, os.path.join(_base, "Compiler"))
-sys.path.insert(0, os.path.join(_base, "Transcoder", "Decoder"))
-sys.path.insert(0, os.path.join(_base, "Transcoder", "Encoder"))
-sys.path.insert(0, os.path.join(_base, "Testing", "Tools"))
+sys.path.insert(0, os.path.join(_base, "compiler", "lexer"))
+sys.path.insert(0, os.path.join(_base, "compiler", "ast_gen"))
+sys.path.insert(0, os.path.join(_base, "compiler", "syn_tree_def"))
+sys.path.insert(0, os.path.join(_base, "compiler", "semantic"))
+sys.path.insert(0, os.path.join(_base, "compiler"))
+sys.path.insert(0, os.path.join(_base, "transcoder", "decoder"))
+sys.path.insert(0, os.path.join(_base, "transcoder", "encoder"))
+sys.path.insert(0, os.path.join(_base, "testing", "tools"))
 
 
 from src2token import tokenize
