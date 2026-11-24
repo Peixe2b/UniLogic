@@ -2,8 +2,8 @@
 # Walks the AST produced by parser.py and emits valid C source.
 # Output targets C99. Includes stdio.h and stdint.h automatically.
 
-from ast_nodes import *
-from semcheck import UL_TO_C
+from compiler.syntree_def.ast_nodes import *
+from compiler.semantic.semcheck import UL_TO_C
 
 INDENT = "    "   # 4 spaces per level
 

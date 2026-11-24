@@ -7,7 +7,7 @@
 # Annotates each node with a 'resolved_type' where possible.
 # Raises SemanticError on any violation.
 
-from ast_nodes import *
+from ..syntree_def.ast_nodes import *
 
 
 class SemanticError(Exception):

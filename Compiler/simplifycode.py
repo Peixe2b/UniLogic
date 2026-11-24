@@ -13,7 +13,7 @@
 # Legacy fallback:    // @norm 2  (comment form, still accepted)
 
 import re
-from ast_nodes import *
+from .syntree_def.ast_nodes import *
 
 
 def detect_norm_level(program, source=None):

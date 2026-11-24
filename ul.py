@@ -9,21 +9,10 @@ import subprocess
 
 __version__ = "1.0.0"
 
-_base = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(_base, "compiler", "lexer"))
-sys.path.insert(0, os.path.join(_base, "compiler", "ast_gen"))
-sys.path.insert(0, os.path.join(_base, "compiler", "syn_tree_def"))
-sys.path.insert(0, os.path.join(_base, "compiler", "semantic"))
-sys.path.insert(0, os.path.join(_base, "compiler"))
-sys.path.insert(0, os.path.join(_base, "transcoder", "decoder"))
-sys.path.insert(0, os.path.join(_base, "transcoder", "encoder"))
-sys.path.insert(0, os.path.join(_base, "testing", "tools"))
-
-
-from src2token import tokenize
-from token2ast import parse
-from semcheck  import check
-from ast_nodes import ForeignImport, FunctionDecl
+from compiler.ast_gen import parse
+from compiler.lexer import tokenize
+from compiler.semantic import check
+from compiler.syntree_def.ast_nodes import ForeignImport, FunctionDecl
 
 TARGETS = {
     "1": ("c",      ".c"),
@@ -137,24 +126,24 @@ def pick_target(flag=None):
 
 def load_codegen(target):
     if target == "c":
-        from ul2c import generate
+        from transcoder.decoder.ul2c import generate
         return generate, ".c"
     if target == "llvm":
-        from ul2llvm import generate
+        from transcoder.decoder.ul2llvm import generate
         return generate, ".ll"
     if target == "wasm":
-        from ul2llvm import generate
+        from transcoder.decoder.ul2llvm import generate
         def gen_wasm(program, profile=False):
             return generate(program, target_triple="wasm32-unknown-unknown", profile=profile)
         return gen_wasm, ".ll"
     if target == "python":
-        from ul2py import generate
+        from transcoder.decoder.ul2py import generate
         return generate, ".py"
     if target == "js":
-        from ul2js import generate
+        from transcoder.decoder.ul2js import generate
         return generate, ".js"
     if target == "bytecode" or target == "ubi":
-        from ul2ubi import generate
+        from transcoder.encoder.ul2ubi import generate
         return generate, ".ubi"
 
 def compile_file(path, target, out_path=None, norm_level=0, profile=False, quiet=False):
@@ -168,11 +157,11 @@ def compile_file(path, target, out_path=None, norm_level=0, profile=False, quiet
     resolve_local_imports(program, os.path.dirname(os.path.abspath(path)))
 
     if norm_level > 0:
-        from simplifycode import normalize as norm
+        from compiler.simplifycode import normalize as norm
         program = norm(program, level=norm_level, source=src)
     else:
         # Even at level 0, check for per-file override
-        from simplifycode import detect_norm_level, normalize as norm
+        from compiler.simplifycode import detect_norm_level, normalize as norm
         file_level = detect_norm_level(program, src)
         if file_level and file_level > 0:
             program = norm(program, level=file_level, source=src)
@@ -219,10 +208,10 @@ def run_file(path, norm_level=0):
     resolve_local_imports(program, os.path.dirname(os.path.abspath(path)))
 
     if norm_level > 0:
-        from simplifycode import normalize as norm
+        from compiler.simplifycode import normalize as norm
         program = norm(program, level=norm_level, source=src)
     else:
-        from simplifycode import detect_norm_level, normalize as norm
+        from compiler.simplifycode import detect_norm_level, normalize as norm
         file_level = detect_norm_level(program, src)
         if file_level and file_level > 0:
             program = norm(program, level=file_level, source=src)
@@ -249,7 +238,7 @@ def _compile_native(program, path, filename, out_path, profile):
 
     if llc and gcc:
         # LLVM path: .ul → .ll → .o → executable
-        from ul2llvm import generate as gen_llvm
+        from transcoder.decoder.ul2llvm import generate as gen_llvm
         ir = gen_llvm(program, profile=profile)
         ll_path = base + ".ll"
         obj_path = base + ".o"
@@ -277,7 +266,7 @@ def _compile_native(program, path, filename, out_path, profile):
 
     if gcc:
         # C fallback: .ul → .c → executable
-        from ul2c import generate as gen_c
+        from transcoder.decoder.ul2c import generate as gen_c
         c_code = gen_c(program, profile=profile)
         c_path = base + "._tmp.c"
         with open(c_path, "w") as f:
@@ -396,7 +385,7 @@ if __name__ == "__main__":
         idx = sys.argv.index("--from")
         from_lang = sys.argv[idx + 1]
         if from_lang == "python":
-            from py2ul import transpile
+            from transcoder.encoder.py2ul import transpile
             input_path = sys.argv[1]
             out_path = None
             if "-o" in sys.argv:
@@ -491,14 +480,14 @@ if __name__ == "__main__":
         program = parse(tokens, os.path.basename(input_path))
         resolve_local_imports(program, os.path.dirname(os.path.abspath(input_path)))
         if norm_level > 0:
-            from simplifycode import normalize as norm
+            from compiler.simplifycode import normalize as norm
             program = norm(program, level=norm_level, source=src)
         else:
-            from simplifycode import detect_norm_level, normalize as norm
+            from compiler.simplifycode import detect_norm_level, normalize as norm
             file_level = detect_norm_level(program, src)
             if file_level and file_level > 0:
                 program = norm(program, level=file_level, source=src)
-        from ast2src import unparse
+        from compiler.ast2src import unparse
         print(unparse(program), end="")
         sys.exit(0)
 

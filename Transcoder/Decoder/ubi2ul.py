@@ -13,7 +13,7 @@
 #   python ubi2ul.py program.ubi --no-debug    # ignore debug section even if present
 #
 # Usage (as library):
-#   from ubi2ul import decompile_file, decompile_bytes
+#   from transcoder.decoder.ubi2ul import decompile_file, decompile_bytes
 #   source = decompile_file("program.ubi")
 #   source = decompile_bytes(data)
 

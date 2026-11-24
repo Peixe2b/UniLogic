@@ -4,13 +4,13 @@
 # Part of the XPile compiler toolchain.
 #
 # Usage:
-#   from ul2ubi import generate
+#   from transcoder.encoder.ul2ubi import generate
 #   bytecode = generate(program)           # with debug section
 #   bytecode = generate(program, strip=True)  # without debug section
 
 import struct
 import sys
-from ast_nodes import *
+from compiler.syntree_def.ast_nodes import *
 
 # ── Opcodes ──────────────────────────────────────────────────────────────────
 

@@ -1,7 +1,7 @@
 # ulc/codegen_python.py — UniLogic → Python code generator
 # Emits Python 3 source with dataclasses for user-defined types.
 
-from ast_nodes import *
+from compiler.syntree_def.ast_nodes import *
 
 INDENT = "    "
 

@@ -1,7 +1,7 @@
 # ulc/unparse.py — Reconstruct readable UniLogic source from AST nodes
 # Used by --dry-run to show the effect of normalization passes.
 
-from ast_nodes import *
+from .syntree_def.ast_nodes import *
 
 
 def unparse(program):

@@ -2,7 +2,7 @@
 # Takes the token list from lexer.tokenize() and builds an AST.
 # Uses recursive descent. One method per grammar rule.
 
-from ast_nodes import *
+from ..syntree_def.ast_nodes import *
 
 
 class Parser:

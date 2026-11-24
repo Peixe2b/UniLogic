@@ -1,7 +1,7 @@
 # ulc/codegen_js.py — UniLogic → JavaScript code generator
 # Emits plain JS with factory functions for user-defined types.
 
-from ast_nodes import *
+from compiler.syntree_def.ast_nodes import *
 
 INDENT = "    "
 

@@ -3,7 +3,7 @@
 # Uses alloca/load/store for all locals — mem2reg optimizes to SSA.
 # Output can be compiled via: clang output.ll -o output
 
-from ast_nodes import *
+from compiler.syntree_def.ast_nodes import *
 
 # UL type → LLVM IR type
 UL_TO_LLVM = {
@@ -1098,7 +1098,9 @@ class LLVMGen:
 
     def _flatten_concat(self, node, parts, args):
         """Recursively flatten a BinaryOp("+", ...) tree into format parts and args."""
-        from ast_nodes import BinaryOp, StringLiteral, Cast, Identifier, IntLiteral, FloatLiteral, Call
+        from compiler.syntree_def.ast_nodes import (
+            BinaryOp, StringLiteral, Cast, Identifier, IntLiteral, FloatLiteral, Call,
+        )
 
         if isinstance(node, BinaryOp) and node.op == "+":
             self._flatten_concat(node.left, parts, args)
